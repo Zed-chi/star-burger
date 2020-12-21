@@ -66,6 +66,7 @@ pip install -r requirements.txt
 
 ```sh
 python manage.py migrate
+python manage.py createcachetable
 ```
 
 Запустите сервер:
