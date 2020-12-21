@@ -6,4 +6,5 @@ django-phonenumber-field[phonenumbers]
 djangorestframework
 markdown       
 django-filter
+environs
 geopy
