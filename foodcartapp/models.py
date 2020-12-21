@@ -130,7 +130,7 @@ class Order(models.Model):
         default="Unhandled",
         max_length=125,
     )
-    comment = models.TextField(default="", blank=True)
+    comment = models.TextField(blank=True)
     registered_at = models.DateTimeField(default=timezone.now)
     called_at = models.DateTimeField(null=True, blank=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
