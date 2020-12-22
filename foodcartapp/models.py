@@ -91,7 +91,7 @@ class RestaurantMenuItem(models.Model):
         unique_together = [["restaurant", "product"]]
 
 
-class OrderProduct(models.Model):
+class OrderItem(models.Model):
     product = models.ForeignKey(
         "Product",
         on_delete=models.SET_NULL,
@@ -102,7 +102,7 @@ class OrderProduct(models.Model):
     order = models.ForeignKey(
         "Order",
         on_delete=models.CASCADE,
-        related_name="products",
+        related_name="items",
     )
     price = models.IntegerField(default=0)
 
@@ -117,9 +117,8 @@ class OrderProduct(models.Model):
 class Order(models.Model):
     STATUS_CHOICES = (("Handled", "Обработано"), ("Unhandled", "Необработано"))
     PAYMENT_CHOICES = (("CASH", "Наличными"), ("CARD", "Электронно"))
-    ordered_products = models.ManyToManyField(
-        "OrderProduct",
-        related_name="source",
+    order_items = models.ManyToManyField(
+        "OrderItem", related_name='order_parent'        
     )
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
@@ -144,7 +143,7 @@ class Order(models.Model):
         return f"{self.firstname} {self.lastname} -> {self.address}"
 
     def get_price(self):
-        return self.ordered_products.aggregate(models.Sum("price"))[
+        return self.order_items.aggregate(models.Sum("price"))[
             "price__sum"
         ]
 

@@ -13,7 +13,7 @@ from rest_framework.serializers import (
 )
 from rest_framework import status
 
-from .models import Order, OrderProduct
+from .models import Order, OrderItem
 from .models import Product
 
 
@@ -142,13 +142,13 @@ def register_order(request):
 
             for product_info in serializer.validated_data["products"]:
                 product = Product.objects.get(id=int(product_info["product"]))
-                ordered_product = OrderProduct.objects.create(
+                order_item = OrderItem.objects.create(
                     product=product,
                     quantity=int(product_info["quantity"]),
                     order=order,
                     price=product.price * int(product_info["quantity"]),
                 )
-                order.ordered_products.add(ordered_product)
+                order.order_items.add(order_item)
             order.save()
 
             response = {

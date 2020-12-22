@@ -7,14 +7,14 @@ from .models import Product
 from .models import ProductCategory
 from .models import Restaurant
 from .models import RestaurantMenuItem
-from .models import Order, OrderProduct
+from .models import Order, OrderItem
 
 
-admin.site.register(OrderProduct)
+admin.site.register(OrderItem)
 
 
-class OrderProductInline(admin.TabularInline):
-    model = OrderProduct
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
     extra = 0
 
 
@@ -42,7 +42,7 @@ class OrderAdmin(admin.ModelAdmin):
         "registered_at",
     ]
 
-    inlines = [OrderProductInline]
+    inlines = [OrderItemInline]
 
     def response_post_save_change(self, request, obj):
         if "next" in request.GET:
