@@ -163,7 +163,6 @@ def register_order(request):
                 status=status.HTTP_201_CREATED,
             )
     except ValueError as e:
-        print(e)
         return Response(
             {"error": "cannot parse json order", "message": e},
             status=status.HTTP_406_NOT_ACCEPTABLE,
