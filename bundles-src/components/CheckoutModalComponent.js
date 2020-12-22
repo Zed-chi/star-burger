@@ -76,7 +76,7 @@ class CheckoutModal extends Component{
               <label htmlFor="phonenumber">Телефон:</label>
               <input onChange={this.savePhonenumber} required id="phonenumber" maxLength="16" type="tel" className="form-control" placeholder="+7 901 ..." pattern="^\d{11}|\+\d{11}|\+\d\(\d{3}\)\d{3}-\d{2}-\d{2}|\d\(\d{3}\)\d{3}-\d{2}-\d{2}|\+\d-\d{3}-\d{3}-\d{2}-\d{2}|\d-\d{3}-\d{3}-\d{2}-\d{2}"/><br/>
               <label htmlFor="address">Адрес доставки:</label>
-              <input onChange={this.saveAddress} required id="address" type="text" maxLength="256" className="form-control" placeholder="Город, улица, дом"/><br/>
+              <input onChange={this.saveAddress} required id="address" type="text" maxLength="256" className="form-control" placeholder="Нас.пункт, улица, номер дома" pattern="^[А-Яа-я0-9\s]+, [А-Яа-я0-9\s]+, \d+$"/><br/>
             </div>
           </Modal.Body>
           <Modal.Footer>
