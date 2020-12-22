@@ -11,6 +11,7 @@ from django.views import View
 from django.urls import reverse_lazy
 from geopy import distance
 from foodcartapp.models import Product, Restaurant, Order, RestaurantMenuItem
+from requests.exceptions import RequestException
 
 
 class Login(forms.Form):
@@ -134,19 +135,20 @@ def get_coords(address):
         if cache.get(adr_key):
             return cache.get(adr_key)
         res = requests.get(url, params=payload)
-        if res.ok:
-            json_data = res.json()
-            lat, lon = float(json_data[0]["lat"]), float(json_data[0]["lon"])
-            cache.set(adr_key, [lat, lon], 3600)
-            return lat, lon
-    except Exception:
+        if not res.ok:
+            raise RequestException()
+        json_data = res.json()
+        lat, lon = float(json_data[0]["lat"]), float(json_data[0]["lon"])
+        cache.set(adr_key, [lat, lon], 3600)
+        return lat, lon
+    except (AttributeError, RequestException, ValueError):
         return None
 
 
 def get_distance(coord1, coord2):
     try:
         return distance.distance(coord1, coord2).km
-    except Exception:
+    except ValueError:
         return None
 
 
