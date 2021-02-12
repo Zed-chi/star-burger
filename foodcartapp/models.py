@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
+
+
 
 
 class Restaurant(models.Model):
@@ -46,7 +49,6 @@ class Product(models.Model):
         verbose_name="категория",
         related_name="products",
     )
-    price = models.DecimalField("цена", max_digits=8, decimal_places=2)
     image = models.ImageField("картинка")
     special_status = models.BooleanField(
         "спец.предложение",
@@ -54,6 +56,7 @@ class Product(models.Model):
         db_index=True,
     )
     description = models.TextField("описание", max_length=200, blank=True)
+    price = models.DecimalField('цена', max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
 
     objects = ProductQuerySet.as_manager()
 
@@ -66,21 +69,13 @@ class Product(models.Model):
 
 
 class RestaurantMenuItem(models.Model):
-    restaurant = models.ForeignKey(
-        Restaurant,
-        on_delete=models.CASCADE,
-        related_name="menu_items",
-    )
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name="menu_items",
-    )
-    availability = models.BooleanField(
-        "в продаже",
-        default=True,
-        db_index=True,
-    )
+
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu_items',
+                                   verbose_name="ресторан")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='menu_items',
+                                verbose_name='продукт')
+    availability = models.BooleanField('в продаже', default=True, db_index=True)
+
 
     def __str__(self):
         return f"{self.restaurant.name} - {self.product.name}"
