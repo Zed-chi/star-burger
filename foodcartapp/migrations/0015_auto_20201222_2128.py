@@ -7,47 +7,66 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('foodcartapp', '0014_auto_20201219_2314'),
+        ("foodcartapp", "0014_auto_20201219_2314"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.IntegerField()),
-                ('price', models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.IntegerField()),
+                ("price", models.IntegerField(default=0)),
             ],
             options={
-                'verbose_name': 'Позиция заказа',
-                'verbose_name_plural': 'Позиции заказа',
+                "verbose_name": "Позиция заказа",
+                "verbose_name_plural": "Позиции заказа",
             },
         ),
         migrations.RemoveField(
-            model_name='order',
-            name='ordered_products',
+            model_name="order",
+            name="ordered_products",
         ),
         migrations.AlterField(
-            model_name='order',
-            name='comment',
+            model_name="order",
+            name="comment",
             field=models.TextField(blank=True),
         ),
         migrations.DeleteModel(
-            name='OrderProduct',
+            name="OrderProduct",
         ),
         migrations.AddField(
-            model_name='orderitem',
-            name='order',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='foodcartapp.order'),
+            model_name="orderitem",
+            name="order",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="items",
+                to="foodcartapp.order",
+            ),
         ),
         migrations.AddField(
-            model_name='orderitem',
-            name='product',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='foodcartapp.product'),
+            model_name="orderitem",
+            name="product",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="foodcartapp.product",
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='order_items',
-            field=models.ManyToManyField(related_name='order_parent', to='foodcartapp.OrderItem'),
+            model_name="order",
+            name="order_items",
+            field=models.ManyToManyField(
+                related_name="order_parent", to="foodcartapp.OrderItem"
+            ),
         ),
     ]

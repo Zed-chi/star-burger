@@ -155,7 +155,10 @@ def get_distance(coord1, coord2):
 def serialize_order(order):
     order_coords = get_coords(order.address)
     products = [item.product for item in order.order_items.all()]
-    restaurant_items_lists = [RestaurantMenuItem.objects.filter(product=product) for product in products]
+    restaurant_items_lists = [
+        RestaurantMenuItem.objects.filter(product=product)
+        for product in products
+    ]
     restaurants_lists = []
 
     for restaurant_items in restaurant_items_lists:
@@ -167,7 +170,7 @@ def serialize_order(order):
                 {"name": item.restaurant.name, "distance": round(dist, 2)},
             )
         restaurants_lists.append(restaurants)
-    
+
     return {
         "id": order.id,
         "client": f"{order.firstname} {order.lastname}",

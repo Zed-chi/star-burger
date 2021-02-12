@@ -17,10 +17,10 @@ SECRET_KEY = env.str(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', True)
+DEBUG = env.bool("DEBUG", True)
 
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", ["127.0.0.1", "localhost"])
 
 INSTALLED_APPS = [
     "foodcartapp.apps.FoodcartappConfig",
@@ -48,7 +48,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'star_burger.urls'
+ROOT_URLCONF = "star_burger.urls"
 
 
 DEBUG_TOOLBAR_PANELS = [
@@ -85,7 +85,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'star_burger.wsgi.application'
+WSGI_APPLICATION = "star_burger.wsgi.application"
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

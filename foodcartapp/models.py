@@ -4,8 +4,6 @@ from django.core.validators import MinValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-
-
 class Restaurant(models.Model):
     name = models.CharField("название", max_length=50)
     address = models.CharField("адрес", max_length=100, blank=True)
@@ -56,7 +54,12 @@ class Product(models.Model):
         db_index=True,
     )
     description = models.TextField("описание", max_length=200, blank=True)
-    price = models.DecimalField('цена', max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
+    price = models.DecimalField(
+        "цена",
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+    )
 
     objects = ProductQuerySet.as_manager()
 
@@ -70,12 +73,21 @@ class Product(models.Model):
 
 class RestaurantMenuItem(models.Model):
 
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu_items',
-                                   verbose_name="ресторан")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='menu_items',
-                                verbose_name='продукт')
-    availability = models.BooleanField('в продаже', default=True, db_index=True)
-
+    restaurant = models.ForeignKey(
+        Restaurant,
+        on_delete=models.CASCADE,
+        related_name="menu_items",
+        verbose_name="ресторан",
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="menu_items",
+        verbose_name="продукт",
+    )
+    availability = models.BooleanField(
+        "в продаже", default=True, db_index=True
+    )
 
     def __str__(self):
         return f"{self.restaurant.name} - {self.product.name}"
@@ -113,7 +125,7 @@ class Order(models.Model):
     STATUS_CHOICES = (("Handled", "Обработано"), ("Unhandled", "Необработано"))
     PAYMENT_CHOICES = (("CASH", "Наличными"), ("CARD", "Электронно"))
     order_items = models.ManyToManyField(
-        "OrderItem", related_name='order_parent'        
+        "OrderItem", related_name="order_parent"
     )
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
@@ -138,9 +150,7 @@ class Order(models.Model):
         return f"{self.firstname} {self.lastname} -> {self.address}"
 
     def get_price(self):
-        return self.order_items.aggregate(models.Sum("price"))[
-            "price__sum"
-        ]
+        return self.order_items.aggregate(models.Sum("price"))["price__sum"]
 
     class Meta:
         verbose_name = "Заказ"

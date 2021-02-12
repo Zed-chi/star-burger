@@ -54,7 +54,8 @@ class OrderSerializer(Serializer):
         ):
             raise ValidationError("Wrong phonenumber")
         return phonenumbers.format_number(
-            num, phonenumbers.PhoneNumberFormat.INTERNATIONAL,
+            num,
+            phonenumbers.PhoneNumberFormat.INTERNATIONAL,
         )
 
     def validate_address(self, value):
