@@ -105,13 +105,13 @@ class OrderItem(models.Model):
         blank=True,
         null=True,
     )
-    quantity = models.IntegerField()
+    quantity = models.IntegerField("количество")
     order = models.ForeignKey(
         "Order",
         on_delete=models.CASCADE,
         related_name="items",
     )
-    price = models.IntegerField(default=0)
+    price = models.IntegerField("цена", default=0)
 
     def __str__(self):
         return f"Заказ №{self.order.id}; {self.product.name}; В количестве {self.quantity}"
@@ -130,24 +130,27 @@ class Order(models.Model):
         ("CASH", "Наличными"), 
         ("CARD", "Электронно")
     )
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    phonenumber = PhoneNumberField(region="RU")
-    address = models.CharField(max_length=255)
+    firstname = models.CharField("имя",max_length=100)
+    lastname = models.CharField("фамилия", max_length=100)
+    phonenumber = PhoneNumberField(region="RU", verbose_name="номер телефона")
+    address = models.CharField("адрес доставки", max_length=255, )
     status = models.CharField(
+        "статус",
         choices=STATUS_CHOICES,
         default="Unhandled",
         max_length=125,
     )
-    comment = models.TextField(blank=True)
-    registered_at = models.DateTimeField(default=timezone.now)
-    called_at = models.DateTimeField(null=True, blank=True)
-    delivered_at = models.DateTimeField(null=True, blank=True)
+    comment = models.TextField("комментарий", blank=True)
+    registered_at = models.DateTimeField("зарегистрирован", default=timezone.now)
+    called_at = models.DateTimeField("время звонка", null=True, blank=True)
+    delivered_at = models.DateTimeField("доставлено", null=True, blank=True)
     payment = models.CharField(
+        "вид платежа",
         choices=PAYMENT_CHOICES,
         default="CARD",
         max_length=125,
     )
+    restaurant = models.ForeignKey("Restaurant", related_name="orders", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.firstname} {self.lastname} -> {self.address}"
