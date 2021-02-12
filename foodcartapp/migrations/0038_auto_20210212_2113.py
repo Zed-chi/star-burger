@@ -9,47 +9,108 @@ import phonenumber_field.modelfields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('foodcartapp', '0037_auto_20210125_1833'),
+        ("foodcartapp", "0037_auto_20210125_1833"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('firstname', models.CharField(max_length=100)),
-                ('lastname', models.CharField(max_length=100)),
-                ('phonenumber', phonenumber_field.modelfields.PhoneNumberField(max_length=128, region='RU')),
-                ('address', models.CharField(max_length=255)),
-                ('status', models.CharField(choices=[('Handled', 'Обработано'), ('Unhandled', 'Необработано')], default='Unhandled', max_length=125)),
-                ('comment', models.TextField(blank=True)),
-                ('registered_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('called_at', models.DateTimeField(blank=True, null=True)),
-                ('delivered_at', models.DateTimeField(blank=True, null=True)),
-                ('payment', models.CharField(choices=[('CASH', 'Наличными'), ('CARD', 'Электронно')], default='CARD', max_length=125)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("firstname", models.CharField(max_length=100)),
+                ("lastname", models.CharField(max_length=100)),
+                (
+                    "phonenumber",
+                    phonenumber_field.modelfields.PhoneNumberField(
+                        max_length=128, region="RU"
+                    ),
+                ),
+                ("address", models.CharField(max_length=255)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("Handled", "Обработано"),
+                            ("Unhandled", "Необработано"),
+                        ],
+                        default="Unhandled",
+                        max_length=125,
+                    ),
+                ),
+                ("comment", models.TextField(blank=True)),
+                (
+                    "registered_at",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                ("called_at", models.DateTimeField(blank=True, null=True)),
+                ("delivered_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "payment",
+                    models.CharField(
+                        choices=[
+                            ("CASH", "Наличными"),
+                            ("CARD", "Электронно"),
+                        ],
+                        default="CARD",
+                        max_length=125,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Заказ',
-                'verbose_name_plural': 'Заказы',
+                "verbose_name": "Заказ",
+                "verbose_name_plural": "Заказы",
             },
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.IntegerField()),
-                ('price', models.IntegerField(default=0)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='foodcartapp.order')),
-                ('product', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='foodcartapp.product')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.IntegerField()),
+                ("price", models.IntegerField(default=0)),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="foodcartapp.order",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="foodcartapp.product",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Позиция заказа',
-                'verbose_name_plural': 'Позиции заказа',
+                "verbose_name": "Позиция заказа",
+                "verbose_name_plural": "Позиции заказа",
             },
         ),
         migrations.AddField(
-            model_name='order',
-            name='order_items',
-            field=models.ManyToManyField(related_name='order_parent', to='foodcartapp.OrderItem'),
+            model_name="order",
+            name="order_items",
+            field=models.ManyToManyField(
+                related_name="order_parent", to="foodcartapp.OrderItem"
+            ),
         ),
     ]
