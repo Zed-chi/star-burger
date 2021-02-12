@@ -130,9 +130,6 @@ class Order(models.Model):
         ("CASH", "Наличными"), 
         ("CARD", "Электронно")
     )
-    order_items = models.ManyToManyField(
-        "OrderItem", related_name="order_parent"
-    )
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     phonenumber = PhoneNumberField(region="RU")
