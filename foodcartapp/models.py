@@ -122,8 +122,14 @@ class OrderItem(models.Model):
 
 
 class Order(models.Model):
-    STATUS_CHOICES = (("Handled", "Обработано"), ("Unhandled", "Необработано"))
-    PAYMENT_CHOICES = (("CASH", "Наличными"), ("CARD", "Электронно"))
+    STATUS_CHOICES = (
+        ("Handled", "Обработано"), 
+        ("Unhandled", "Необработано")
+    )
+    PAYMENT_CHOICES = (
+        ("CASH", "Наличными"), 
+        ("CARD", "Электронно")
+    )
     order_items = models.ManyToManyField(
         "OrderItem", related_name="order_parent"
     )
