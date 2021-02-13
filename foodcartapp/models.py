@@ -137,16 +137,18 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default="Unhandled",
         max_length=125,
+        db_index=True,
     )
     comment = models.TextField("комментарий", blank=True)
-    registered_at = models.DateTimeField("зарегистрирован", default=timezone.now)
-    called_at = models.DateTimeField("время звонка", null=True, blank=True)
-    delivered_at = models.DateTimeField("доставлено", null=True, blank=True)
+    registered_at = models.DateTimeField("зарегистрирован", default=timezone.now, db_index=True,)
+    called_at = models.DateTimeField("время звонка", null=True, blank=True, db_index=True,)
+    delivered_at = models.DateTimeField("доставлено", null=True, blank=True, db_index=True,)
     payment = models.CharField(
         "вид платежа",
         choices=PAYMENT_CHOICES,
         default="CARD",
         max_length=125,
+        db_index=True,
     )
     restaurant = models.ForeignKey("Restaurant", related_name="orders", on_delete=models.CASCADE)
 
