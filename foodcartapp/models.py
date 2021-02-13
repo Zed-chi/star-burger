@@ -40,14 +40,12 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     name = models.CharField("название", max_length=50)
     category = models.ForeignKey(
-        ProductCategory,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        ProductCategory,                
+        on_delete=models.CASCADE,
         verbose_name="категория",
         related_name="products",
     )
-    image = models.ImageField("картинка")
+    image = models.ImageField("картинка", null=True, blank=True)
     special_status = models.BooleanField(
         "спец.предложение",
         default=False,
@@ -101,9 +99,7 @@ class RestaurantMenuItem(models.Model):
 class OrderItem(models.Model):
     product = models.ForeignKey(
         "Product",
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
+        on_delete=models.CASCADE,                
     )
     quantity = models.IntegerField("количество")
     order = models.ForeignKey(
@@ -133,7 +129,7 @@ class Order(models.Model):
     firstname = models.CharField("имя",max_length=100)
     lastname = models.CharField("фамилия", max_length=100)
     phonenumber = PhoneNumberField(region="RU", verbose_name="номер телефона")
-    address = models.CharField("адрес доставки", max_length=255, )
+    address = models.CharField("адрес доставки", max_length=255,)
     status = models.CharField(
         "статус",
         choices=STATUS_CHOICES,
@@ -150,7 +146,7 @@ class Order(models.Model):
         default="CARD",
         max_length=125,
     )
-    restaurant = models.ForeignKey("Restaurant", related_name="orders", on_delete=models.SET_NULL, null=True)
+    restaurant = models.ForeignKey("Restaurant", related_name="orders", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.firstname} {self.lastname} -> {self.address}"
