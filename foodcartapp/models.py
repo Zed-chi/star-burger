@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MinValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
+from django.core.validators import MinValueValidator
 
 
 class Restaurant(models.Model):
@@ -102,13 +103,13 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
         related_name="order_items",
     )
-    quantity = models.IntegerField("количество")
+    quantity = models.IntegerField("количество", validators=[MinValueValidator(1),])
     order = models.ForeignKey(
         "Order",
         on_delete=models.CASCADE,
         related_name="items",
     )
-    price = models.IntegerField("цена", default=0)
+    price = models.IntegerField("цена", default=0, validators=[MinValueValidator(0),])
 
     def __str__(self):
         return f"Заказ №{self.order.id}; {self.product.name}; В количестве {self.quantity}"
